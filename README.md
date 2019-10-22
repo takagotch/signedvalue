@@ -85,6 +85,26 @@ func TestPayloadTampering(t *testing.T) {
   }
 }
 
+var result string
+
+func BenchmarkNoKeyVersioningCreate(b *testing.B) {
+  var signed string
+  for n := 0; n < b.N; n++ {
+    signed = Create(secret, "key", "value")
+  }
+  
+  result = signed
+}
+
+func BenchmarkNoKeyVersioningDecode(b *testing.B) {
+  signed := Create(secret, "key", "value")
+  var decoded string
+  for n := 0; n < b.N; n++ {
+    decoded, _ = Decode(signed, "key", signed, 10)
+  }
+  
+  result = decoded
+}
 ```
 
 ```
